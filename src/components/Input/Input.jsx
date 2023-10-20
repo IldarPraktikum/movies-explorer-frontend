@@ -1,6 +1,6 @@
 import './Input.css'
 
-export default function Input({ selectname, name, type, title, minLength, value, isInputValid, error, onChange }) {
+export default function Input({ selectname, name, type, title, minLength, value, isInputValid, error, onChange, isEdit }) {
 
   return (
     <>
@@ -31,6 +31,7 @@ export default function Input({ selectname, name, type, title, minLength, value,
             className={`profile__input ${isInputValid === undefined || isInputValid ? '' : 'profile__input_invaid'}`}
             value={value || ''}
             onChange={onChange}
+            disabled={!isEdit}
           />
         </label>
         <span className={`profile__error ${name === 'username' ? 'profile__error_type_name' : ''}`}>{error}</span>

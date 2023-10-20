@@ -8,17 +8,20 @@
 
 .error__container {
   padding-top: 246px;
+  padding-bottom: 60px;
 }
 
 @media screen and (max-width: 768px) {
   .error__container {
     padding-top: 407px;
+    padding-bottom: 222px;
   }
 }
 
 @media screen and (max-width: 525px) {
   .error__container {
     padding-top: 329px;
+    padding-bottom: 30px;
   }
 }
 

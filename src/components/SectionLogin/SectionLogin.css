@@ -1,5 +1,6 @@
 .page__login {
   padding-top: 70px;
+  padding-bottom: 70px;
   margin: 0 auto;
   width: 396px;
 }
@@ -7,12 +8,14 @@
 @media screen and (max-width: 768px) {
   .page__login {
     padding-top: 232px;
+    padding-bottom: 232px;
   }
 }
 
 @media screen and (max-width: 525px) {
   .page__login {
     padding-top: 56px;
+    padding-bottom: 30px;
     width: calc(260/320*100%);
   }
 }

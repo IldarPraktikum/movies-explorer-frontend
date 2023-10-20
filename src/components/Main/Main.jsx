@@ -13,7 +13,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { movies, saveMovies } from '../../utils/constants'
 import { useEffect, useState } from 'react';
 
-export default function Main({ name, setLoggedIn }) {
+export default function Main({ name, setLoggedIn, isSuccess, setSuccess, setIsEdit, isEdit }) {
   const [moviesAll, setMoviesAll] = useState([])
   const [saveMovie, setSaveMovie] = useState([])
   const [isCheckMoviesAll, setIsCheckMoviesAll] = useState(true)
@@ -59,7 +59,7 @@ export default function Main({ name, setLoggedIn }) {
         signin: <Login name={name} setLoggedIn={setLoggedIn} />,
         signup: <Register name={name} setLoggedIn={setLoggedIn} />,
         error: <Error />,
-        profile: <Profile name={name} setLoggedIn={setLoggedIn} />,
+        profile: <Profile name={name} setLoggedIn={setLoggedIn} isSuccess={isSuccess} setSuccess={setSuccess} setIsEdit={setIsEdit} isEdit={isEdit} />,
         movies:
           <>
             <SearchForm isCheck={isCheckMoviesAll} changeShot={onCheckMoviesAll} />

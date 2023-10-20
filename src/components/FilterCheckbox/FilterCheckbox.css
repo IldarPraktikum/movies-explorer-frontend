@@ -75,7 +75,7 @@
 }
 
 .search__check-svg-rect_active {
-  fill: #343434;
+  fill: #C4C4C4;
 }
 
 @media (hover: hover) and (pointer: fine) {

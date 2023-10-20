@@ -1,18 +1,21 @@
 .page__profile {
   margin: 0 auto;
   padding-top: 74px;
+  padding-bottom: 70px;
   max-width: 410px;
 }
 
 @media screen and (max-width: 768px) {
   .page__profile {
     padding-top: 236px;
+    padding-bottom: 269px;
   }
 }
 
 @media screen and (max-width: 525px) {
   .page__profile {
     padding-top: 70px;
+    padding-bottom: 40px;
     max-width: 260px;
   }
 }

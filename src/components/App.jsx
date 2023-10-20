@@ -3,11 +3,16 @@ import './App.css';
 import Header from './Header/Header';
 import Main from './Main/Main';
 import Footer from './Footer/Footer';
-import { useState } from 'react';
-
+import { useState, useCallback } from 'react';
 
 function App() {
 const [loggedIn, setLoggedIn] = useState(false)
+const [isSuccess, setIsSuccess] = useState(false)
+const [isEdit, setIsEdit] = useState(false)
+
+const setSuccess = useCallback(() => {
+  setIsSuccess(false)
+}, [])
 
   return (
     <div className="page__container">
@@ -48,7 +53,7 @@ const [loggedIn, setLoggedIn] = useState(false)
         <Route path='/profile' element={
           <>
             <Header />
-            <Main name='profile' setLoggedIn={setLoggedIn}/>
+            <Main name='profile' setLoggedIn={setLoggedIn} isSuccess={isSuccess} setSuccess={setSuccess} setIsEdit={setIsEdit} isEdit={isEdit}/>
           </>
         } />
 

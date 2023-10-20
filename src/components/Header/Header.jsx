@@ -55,7 +55,7 @@ export default function Header({ name, loggedIn }) {
               <li className='header__link-container'>
                 <Link
                   to={'/'}
-                  className={`header__link ${pathname === '/' ? 'header__link_active' : ''}`}
+                  className={`header__link ${pathname === '/' ? 'header__link_active' : ''} ${pathname === '/' ? 'header__link_black' : ''} ${pathname === '/movies' ? 'header__link_black' : ''} ${pathname === '/saved-movies' ? 'header__link_black' : ''}`}
                   onClick={clickLink}
                 >Главная</Link>
               </li>
@@ -76,14 +76,14 @@ export default function Header({ name, loggedIn }) {
               <li className='header__link-container'>
                 <Link
                   to={'/profile'}
-                  className={`header__link header__link_type_acc ${pathname === '/profile' ? 'header__link_active' : ''} ${pathname === '/profile' ? 'header__link_type_acc-white' : ''} ${pathname === '/movies' ? 'header__link_type_acc-white' : ''} ${pathname === '/saved-movies' ? 'header__link_type_acc-white' : ''}`}
+                  className={`header__link header__link_type_acc  ${pathname === '/profile' ? 'header__link_type_acc-white' : ''} ${pathname === '/movies' ? 'header__link_type_acc-white' : ''} ${pathname === '/saved-movies' ? 'header__link_type_acc-white' : ''}`}
                   onClick={clickLink}
                 >Аккаунт <div className='header__acc-icon'></div></Link>
               </li>
             </ul>
             <button type='button' className='header__burger-close' onClick={handelClick}></button>
           </nav>
-          <button type='button' className='header__burger' onClick={handelClick}></button>
+          <button type='button' className={`header__burger ${pathname === '/' ? 'header__burger_white' : ''}`} onClick={handelClick}></button>
         </>
       }
     </header>
