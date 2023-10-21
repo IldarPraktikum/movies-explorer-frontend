@@ -34,7 +34,7 @@
   .gallery__lists {
     grid-template-columns: repeat(auto-fit, 339px);
     column-gap: 30px;
-    row-gap: 35px
+    row-gap: 35px;
   }
 }
 
@@ -42,7 +42,8 @@
   .gallery__lists {
     grid-template-columns: repeat(auto-fit, 300px);
     column-gap: 30px;
-    row-gap: 19px
+    row-gap: 19px;
+    justify-content: center;
   }
 }
 
