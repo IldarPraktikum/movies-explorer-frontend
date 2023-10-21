@@ -1,0 +1,132 @@
+.page__search {
+  padding: 70px 70px 0;
+}
+
+@media screen and (max-width:1023px) {
+  .page__search {
+    padding-top: 80px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width:767px) {
+  .page__search {
+    padding-top: 78px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+.search__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 46px;
+}
+
+@media screen and (max-width: 525px) {
+  .search__container {
+    padding-bottom: 39px;
+  }
+}
+
+.search__form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+  padding-bottom: 11px;
+  box-sizing: border-box;
+
+  border-bottom: 1px solid #E8E8E8;
+}
+
+@media screen and (max-width: 768px) {
+  .search__form {
+    margin-right: 0px;
+    margin-bottom: 13px;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .search__form {
+    margin-bottom: 21px;
+    padding-top: 6px;
+    padding-bottom: 9px;
+  }
+}
+
+.search__input {
+  background-color: transparent;
+  border: none;
+  width: 90%;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: normal;
+  color: #A0A0A0;
+}
+
+@media screen and (max-width: 525px) {
+  .search__input {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+
+
+.search__input:focus {
+  outline: 0.2px solid #4285F4;
+}
+
+.search_submit {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  background-color: 
+  #3456F3;
+  border-radius: 40px;
+  width: 80px;
+  min-height: 34px;
+  color: #FFFFFF;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 18px;
+  border: none;
+  transition: opacity .3s linear;
+  max-width: 58px;
+  cursor: pointer;
+}
+
+
+
+@media (hover: hover) and (pointer: fine) {
+  .search_submit:hover {
+    opacity: .6;
+  }
+}
+
+.search__error {
+  visibility: hidden;
+  min-height: 14px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+  color: #FF004C;
+}
+
+.search__error_active {
+  visibility: visible;
+}
+
+@media screen and (max-width: 525px) {
+  .search__error {
+    margin-bottom: 3px;
+  }
+}
