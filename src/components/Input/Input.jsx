@@ -1,6 +1,10 @@
 import './Input.css'
+import { useContext } from 'react'
+import SendContext from '../../contexts/SendContext'
 
-export default function Input({ selectname, name, type, title, minLength, value, isInputValid, error, onChange, isEdit }) {
+export default function Input({ selectname, name, type, title, minLength, value, isInputValid, error, onChange, isEdit, pattern, placeholder }) {
+  const isSend = useContext(SendContext)
+
 
   return (
     <>
@@ -16,6 +20,9 @@ export default function Input({ selectname, name, type, title, minLength, value,
             value={value || ''}
             onChange={onChange}
             autoComplete='on'
+            disabled={isSend}
+            pattern={pattern}
+            placeholder={placeholder}
           />
           <span className='login__error'>{error}</span>
         </label>
@@ -31,7 +38,8 @@ export default function Input({ selectname, name, type, title, minLength, value,
             className={`profile__input ${isInputValid === undefined || isInputValid ? '' : 'profile__input_invaid'}`}
             value={value || ''}
             onChange={onChange}
-            disabled={!isEdit}
+            disabled={isSend || !isEdit}
+            pattern={pattern}
           />
         </label>
         <span className={`profile__error ${name === 'username' ? 'profile__error_type_name' : ''}`}>{error}</span>
