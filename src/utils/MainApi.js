@@ -101,7 +101,7 @@ class ApiMain {
 }
 
 const apiMain = new ApiMain({
-  baseUrl: 'api.ildarpracticum-dip23.nomoredomainsrocks.ru',
+  baseUrl: 'https://api.ildarpracticum-dip23.nomoredomainsrocks.ru',
   // baseUrl: 'http://localhost:3000',
 });
 
