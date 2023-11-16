@@ -1,42 +1,22 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
-export default function useFormValidation() {
-  const [values, setValues] = useState({})
-  const [errors, setErrors] = useState({})
-  const [isInputValid, setIsInputValid] = useState({})
-  const [isValid, setIsValid] = useState(false)
+export function useFormValidation(initialValues = {}) {
+  const [values, setValues] = useState(initialValues);
+  const [error, setError] = useState({});
+  const [isValid, setIsValid] = useState(false);
 
+  const handleChange = (event) => {
+    const { value, name, validationMessage } = event.target;
+    setError({ ...error, [name]: validationMessage });
+    setValues({ ...values, [name]: value });
+    setIsValid(event.currentTarget.form.checkValidity());
+  };
 
-  function handleChange(evt) {
-    const name = evt.target.name
-    const value = evt.target.value
-    const validationMessage = evt.target.validationMessage
-    const valid = evt.target.validity.valid
-    const form = evt.target.form
-    setValues((oldValues) => {
-      return { ...oldValues, [name]: value }
-    })
-    setErrors(oldErrors => {
-      return { ...oldErrors, [name]: validationMessage }
-    })
-    setIsInputValid((oldValid) => {
-      return { ...oldValid, [name]: valid }
-    })
-    setIsValid(form.checkValidity())
-  }
+  const resetInput = () => {
+    setValues(initialValues);
+    setError({});
+    setIsValid(false);
+  };
 
-  const setValue = useCallback((name, value) => {
-    setValues((oldValues) => {
-      return { ...oldValues, [name]: value }
-    })
-  }, [])
-
-  const reset = useCallback((data = {}) => {
-    setValues(data)
-    setErrors({})
-    setIsInputValid({})
-    setIsValid(false)
-  },[])
-
-  return { values, errors, isInputValid, isValid, handleChange, setValue, reset }
+  return { values, error, isValid, setValues, handleChange, resetInput };
 }

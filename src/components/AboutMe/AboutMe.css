@@ -25,10 +25,8 @@
   font-weight: 400;
   line-height: normal;
   letter-spacing: -0.88px;
-}
 
-@media screen and (max-width: 767px) {
-  .aboutme__title {
+  @media screen and (max-width: 767px) {
     margin-bottom: 60px;
     padding-bottom: 28px;
     font-size: 18px;
@@ -42,87 +40,70 @@
   justify-content: space-between;
   grid-template-columns: minmax(0, 600px) 270px;
 
-}
-
-@media screen and (max-width: 1023px) {
-  .aboutme__container {
+  @media screen and (max-width: 1023px) {
     grid-template-columns: minmax(0, 367px) 255px;
   }
-}
 
-@media screen and (max-width: 767px) {
-  .aboutme__container {
+  @media screen and (max-width: 767px) {
     justify-content: center;
     grid-template-columns: minmax(284px, auto);
     row-gap: 38px;
   }
 }
 
-.aboutme__name {
+.aboutme__my-name {
   margin: 0 0 18px 0;
   font-size: 50px;
   font-weight: 400;
   line-height: 58px;
   letter-spacing: -2px;
-}
 
-@media screen and (max-width: 1023px) {
-  .aboutme__name {
+  @media screen and (max-width: 1023px) {
     margin-bottom: 16px;
     font-size: 40px;
     line-height: 40px;
     letter-spacing: -1.6px;
   }
-}
 
-@media screen and (max-width: 767px) {
-  .aboutme__name {
+  @media screen and (max-width: 767px) {
     margin-bottom: 18px;
     font-size: 30px;
     letter-spacing: -1.2px;
   }
 }
 
-.aboutme__job {
+.aboutme__profession {
   margin: 0 0 26px 0;
   font-size: 18px;
   font-weight: 500;
   line-height: 20px;
-}
 
-@media screen and (max-width: 1023px) {
-  .aboutme__job {
+  @media screen and (max-width: 1023px) {
     margin-bottom: 20px;
     font-size: 12px;
     line-height: 18px;
   }
-}
 
-@media screen and (max-width: 767px) {
-  .aboutme__job {
+  @media screen and (max-width: 767px) {
     margin-bottom: 20px;
     font-size: 11px;
     line-height: 16px;
   }
 }
 
-.aboutme__description {
+.aboutme__about-myself {
   margin: 0 0 99px 0;
   font-size: 14px;
   font-weight: 400;
   line-height: 22px;
-}
 
-@media screen and (max-width: 1023px) {
-  .aboutme__description {
+  @media screen and (max-width: 1023px) {
     margin-bottom: 86px;
     font-size: 12px;
-    line-height: 18px
+    line-height: 18px;
   }
-}
 
-@media screen and (max-width: 767px) {
-  .aboutme__description {
+  @media screen and (max-width: 767px) {
     margin-bottom: 39px;
     font-size: 11px;
     line-height: 16px;
@@ -135,37 +116,33 @@
   font-weight: 500;
   line-height: normal;
   color: #000;
-  transition: opacity .2s ease;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+    cursor: pointer;
+  }
 }
 
-.aboutme__image {
+.aboutme__avatar {
   display: block;
   width: 270px;
   height: 327px;
   border-radius: 10px;
   object-fit: cover;
-}
 
-@media screen and (max-width: 1023px) {
-  .aboutme__image {
+  @media screen and (max-width: 1023px) {
     width: 255px;
     height: 307px;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .aboutme__image:first-of-type {
+  .aboutme__avatar:first-of-type {
     justify-self: center;
     width: 284px;
     grid-column: 1;
     grid-row: 1;
     height: 352px;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .aboutme__link:hover {
-    opacity: .6;
-    cursor: pointer;
   }
 }

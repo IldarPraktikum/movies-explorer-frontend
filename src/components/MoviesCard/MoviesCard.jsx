@@ -1,51 +1,91 @@
-import { useLocation } from 'react-router-dom'
-import './MoviesCard.css'
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { addSavedMovies, deleteSavedMovies } from "../../utils/MainApi";
+import { useLocation } from "react-router-dom";
+import "./MoviesCard.css";
 
-export default function MoviesCard({ onDelete, addMovie, data, savedMovies }) {
-  const { pathname } = useLocation()
-  const [click, setClick] = useState(false)
+function MoviesCard({
+  src,
+  name,
+  duration,
+  link,
+  id,
+  item,
+  savedMovies,
+  setSavedMovies,
+  setSelectSavedMovies,
+  selectSavedMovies,
+}) {
+  const [isSaved, setIsSaved] = useState(false);
+  const [savedMovieId, setSavedMovieId] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
-    if (pathname === '/movies')
-      setClick(savedMovies.some(element => data.id === element.movieId))
-  }, [savedMovies, data.id, setClick, pathname])
-
-  function onClick() {
-    if (savedMovies.some(element => data.id === element.movieId)) {
-      setClick(true)
-      addMovie(data)
+    const savedMovie = savedMovies.find((item) => item.movieId === id);
+    if (savedMovie) {
+      setIsSaved(true);
+      setSavedMovieId(savedMovie._id);
     } else {
-      setClick(false)
-      addMovie(data)
+      setIsSaved(false);
+      setSavedMovieId("");
     }
-  }
+  }, [savedMovies, id]);
 
-  function convertTime(duration) {
+  const handleSaveDeleteMovies = () => {
+    if (isSaved) {
+      deleteSavedMovies(savedMovieId)
+        .then(() => {
+          setSavedMovies(savedMovies.filter((item) => item.movieId !== id));
+          if (location.pathname === "/saved-movies") {
+            setSelectSavedMovies(selectSavedMovies.filter((item) => item.movieId !== id));
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      addSavedMovies(item)
+        .then((res) => {
+          setIsSaved(true);
+          setSavedMovieId(res._id);
+          setSavedMovies([...savedMovies, res]);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const converterTime = (duration) => {
     const minutes = duration % 60;
     const hours = Math.floor(duration / 60);
-    return (hours === 0 ? `${minutes}м` : minutes === 0 ? `${hours}ч` : `${hours}ч${minutes}м`)
-  }
+    return `${hours}ч ${minutes}м`;
+  };
 
   return (
-    <li className='gallery__card'>
-      <article>
-        <Link to={data.trailerLink} target='_blank'>
-          <img src={pathname === '/movies' ? `https://api.nomoreparties.co${data.image.url}` : data.image} alt={data.name} className='gallery__image' />
-        </Link>
-        <div className='gallery__card-group'>
-          <div className='gallery__text-group'>
-            <p className='gallery__subtitle'>{data.nameRU}</p>
-            <span className='gallery__duration'>{convertTime(data.duration)}</span>
+    <li>
+      <article className="movie">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          className="movie__link-container"
+          href={link}
+        >
+          <img className="movie__img" alt={name} src={src}></img>
+          <div className="movie__info">
+            <h2 className="movie__name">{name}</h2>
+            <p className="movie__duration">{converterTime(duration)}</p>
           </div>
-          {pathname === '/movies' ?
-            <button type='button' className={`gallery__save ${click ? 'gallery__save_active' : ''}`} onClick={onClick}></button>
-            :
-            <button type='button' className={`gallery__save gallery__save_type_delete`} onClick={() => onDelete(data._id)}></button>
-          }
-        </div>
+        </a>
+        <button
+          type="button"
+          onClick={handleSaveDeleteMovies}
+          className={`movie__button-save ${
+            !isSaved
+              ? "movie__button-save_disactive"
+              : location.pathname === "/saved-movies"
+              ? "movie__button-save_delete"
+              : "movie__button-save_active"
+          }`}
+        ></button>
       </article>
     </li>
-  )
+  );
 }
+
+export default MoviesCard;

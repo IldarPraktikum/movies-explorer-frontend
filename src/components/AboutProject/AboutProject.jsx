@@ -1,25 +1,31 @@
-import Wrapper from '../Wrapper/Wrapper'
-import './AboutProject.css'
+import React from 'react';
+import Rolling from '../Rolling/Rolling';
+import './AboutProject.css';
 
-
-export default function AboutProject() {
+const AboutProject = () => {
   return (
-    <section id={"aboutProject"} className="about page__about">
-      <Wrapper>
-        <h2 className="about__title">О проекте</h2>
-        <div className="about__container">
-          <h3 className="about__subtitle">Дипломный проект включал 5 этапов</h3>
-          <h3 className="about__subtitle">На выполнение диплома ушло 5 недель</h3>
-          <p className="about__description">Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.</p>
-          <p className="about__description">У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.</p>
+    <section id="aboutProject" className="project page__about">
+      <Rolling>
+        <h2 className="project__title">О проекте</h2>
+        <div className="project__container">
+          <h3 className="project__subtitle">Дипломный проект включал 5 этапов</h3>
+          <h3 className="project__subtitle">На выполнение диплома ушло 5 недель</h3>
+          <p className="project__overview">
+            Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.
+          </p>
+          <p className="project__overview">
+            У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.
+          </p>
         </div>
-        <div className="about__time-learn">
-            <p className="about__progress about__progress_type_backend" >1 неделя</p>
-            <p className="about__progress">4 недели</p>
-            <span className="about__text">Back-end</span>
-            <span className="about__text">Front-end</span>
+        <div className="project__study-course">
+          <p className="project__studies project__studies_stage_backend">1 неделя</p>
+          <p className="project__studies">4 недели</p>
+          <span className="project__text">Back-end</span>
+          <span className="project__text">Front-end</span>
         </div>
-      </Wrapper>
+      </Rolling>
     </section>
-  )
-}
+  );
+};
+
+export default AboutProject;

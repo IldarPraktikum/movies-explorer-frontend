@@ -1,64 +1,77 @@
-import SearchForm from "../SearchForm/SearchForm";
+import React, { useEffect, useState } from "react";
+import "./SavedMovies.css";
+import MoviesCard from "../MoviesCard/MoviesCard";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { useCallback, useEffect, useState } from "react";
+import SearchForm from "../SearchForm/SearchForm";
 
-export default function SavedMovies({ savedMovie, onDelete, setIsError }) {
-
-  const [filteredMovies, setFilteredMovies] = useState(savedMovie)
-  const [searchedMouvie, setSearchedMovie] = useState('')
-  const [isCheck, setIsCheck] = useState(false)
-  const [initialEntry, setInitialEntry] = useState(true)
-
-  const filter = useCallback((search, isCheck, movies) => {
-    setSearchedMovie(search)
-    setFilteredMovies(movies.filter((movie) => {
-      const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase())
-      return isCheck ? (searchName && movie.duration <= 40) : searchName
-    }))
-  }, [])
-
-  function searchMovies(search) {
-    setInitialEntry(false)
-    filter(search, isCheck, savedMovie)
-  }
+function SavedMovies({
+  setChecked,
+  checked,
+  filterMovies,
+  savedMovies,
+  setSavedMovies,
+  selectSavedMovies,
+  setSelectSavedMovies,
+  setIsDisabledCheckbox,
+  isDisabledCheckbox,
+  disabledSearchButton,
+  disabledInput,
+}) {
+  const [presentSavedMovies, setPresentSavedMovies] = useState(true);
 
   useEffect(() => {
-    if (savedMovie.length === 0) {
-      setInitialEntry(true)
-    } else {
-      setInitialEntry(false)
-    }
-    filter(searchedMouvie, isCheck, savedMovie)
-  }, [filter, savedMovie, isCheck, searchedMouvie])
+    setSelectSavedMovies([]);
+    setChecked(false);
+    setPresentSavedMovies(true);
+  }, []);
 
-  function changeShort() {
-    if (isCheck) {
-      setIsCheck(false)
-      setInitialEntry(false)
-      filter(searchedMouvie, false, savedMovie)
-    } else {
-      setIsCheck(true)
-      setInitialEntry(false)
-      filter(searchedMouvie, true, savedMovie)
-    }
+  function handleSubmitSearch(value, checked) {
+    filterMovies(value, checked, savedMovies);
+    setPresentSavedMovies(false);
   }
 
+  const renderMovies = presentSavedMovies
+    ? savedMovies
+    : selectSavedMovies;
+
   return (
-    <>
+    <main className="saved-movies">
       <SearchForm
-        isCheck={isCheck}
-        searchMovies={searchMovies}
-        searchedMovie={searchedMouvie}
-        changeShort={changeShort}
-        setIsError={setIsError}
-        initialEntry={initialEntry}
-        savedMovie={savedMovie}
+        setIsDisabledCheckbox={setIsDisabledCheckbox}
+        setChecked={setChecked}
+        checked={checked}
+        handleSubmitSearch={handleSubmitSearch}
+        isDisabledCheckbox={isDisabledCheckbox}
+        disabledInput={disabledInput}
+        disabledSearchButton={disabledSearchButton}
       />
-      <MoviesCardList
-        movies={filteredMovies}
-        onDelete={onDelete}
-        initialEntry={initialEntry}
-      />
-    </>
-  )
+      {renderMovies.length > 0 ? (
+        <MoviesCardList>
+          {renderMovies.map((item) => (
+            <MoviesCard
+              key={item._id}
+              savedMovies={savedMovies}
+              setSavedMovies={setSavedMovies}
+              id={item.movieId}
+              item={item}
+              link={item.trailerLink}
+              src={item.image}
+              name={item.nameRU}
+              duration={item.duration}
+              selectSavedMovies={selectSavedMovies}
+              setSelectSavedMovies={setSelectSavedMovies}
+            />
+          ))}
+        </MoviesCardList>
+      ) : (
+        <div className="find-container">
+          <p className="find-container__text">
+            Ничего не найдено. Попробуйте еще раз.
+          </p>
+        </div>
+      )}
+    </main>
+  );
 }
+
+export default SavedMovies;

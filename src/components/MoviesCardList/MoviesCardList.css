@@ -1,84 +1,53 @@
-.page__gallery {
-  padding: 70px 70px 80px;
-}
-
-@media screen and (max-width: 1023px) {
-  .page__gallery {
-    padding-top: 83px;
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .page__gallery {
-    padding-top: 50px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
-
-.gallery__lists {
-  list-style: none;
-  padding: 0;
-  padding-bottom: 60px;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 270px);
+.movies-list {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  column-gap: 20px;
-  row-gap: 31px;
+  max-width: 1140px;
+  margin: auto;
+  padding: 70px 70px 28px;
 }
 
-@media screen and (max-width: 1023px) {
-  .gallery__lists {
-    grid-template-columns: repeat(auto-fit, 339px);
-    column-gap: 30px;
-    row-gap: 35px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .gallery__lists {
-    grid-template-columns: repeat(auto-fit, 300px);
-    column-gap: 30px;
-    row-gap: 19px;
-    justify-content: center;
-  }
-}
-
-.gallery__more {
-  display: block;
+.movies-list__container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(4, minmax(270px, 151px));
+  gap: 30px 20px;
+  margin: auto;
+  width: 100%;
   padding: 0;
-  margin: 0 auto;
-  width: 320px;
-  height: 36px;
-  border-radius: 5px;
-  border: none;
-  background-color: #F9F9F9;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: normal;
-  cursor: pointer;
-  transition: opacity .2s ease;
+  list-style-type: none;
 }
 
-@media screen and (max-width: 767px) {
-  .gallery__more {
-    width: 240px;
-    height: 36px;
+@media (max-width: 1300px) {
+  .movies-list__container {
+    grid-template-columns: repeat(3, minmax(270px, 151px));
   }
 }
 
-.gallery__more_hidden {
-  visibility: hidden;
+@media (max-width: 1020px) {
+  .movies-list {
+    padding: 70px 30px 12px;
+  }
+
+  .movies-list__container {
+    grid-template-columns: repeat(2, minmax(339px, 190px));
+    gap: 47px 30px;
+  }
 }
 
-.gallery__more:hover {
-  opacity: .6;
-  cursor: pointer;
-}
+@media (max-width: 680px) {
+    .movies-list {
+      padding: 40px 10px 13px;
+    }
+  
+    .movies-list__container {
+      grid-template-columns: minmax(300px, 168px);
+      gap: 38px;
+    }
+  }
 
-.gallery__serch-error {
- text-align: center; 
-}
+  @media (max-width: 320px) {
+    .movies-list__container {
+      gap: 36px;
+    }
+  }

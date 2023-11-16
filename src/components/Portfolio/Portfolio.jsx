@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom'
-import './Portfolio.css'
-import Wrapper from '../Wrapper/Wrapper'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Portfolio.css';
+import Rolling from '../Rolling/Rolling';
 
-export default function Portfolio() {
+const Portfolio = () => {
   return (
-    <section className='portfolio page__portfolio'>
-      <Wrapper>
-        <h2 className='portfolio__title'>Портфолио</h2>
-        <nav className="portfolio__nav">
+    <section className='portfolio'>
+      <Rolling>
+        <h3 className='portfolio__title'>Портфолио</h3>
+        <nav className='portfolio__nav'>
           <ul className='portfolio__lists'>
             <li className='portfolio__list'>
               <Link to={'https://github.com'} target='_blank' className='portfolio__link'>
@@ -29,7 +30,9 @@ export default function Portfolio() {
             </li>
           </ul>
         </nav>
-      </Wrapper>
+      </Rolling>
     </section>
-  )
+  );
 }
+
+export default Portfolio;

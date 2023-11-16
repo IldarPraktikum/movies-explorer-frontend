@@ -1,94 +1,156 @@
-import SearchForm from "../SearchForm/SearchForm";
+import "./Movies.css";
+import React, { useEffect, useState, useCallback } from "react";
+import SearchForm from "../SearchForm/SearchForm.jsx";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { useCallback, useState } from "react";
-import apiMovies from '../../utils/MoviesApi';
-import { useEffect } from "react";
+import MoviesCard from "../MoviesCard/MoviesCard";
+import Preloader from "../Preloader/Preloader";
+import {
+  StepBigScreen,
+  StepLessScreen,
+  InitMobileScreen,
+  InitBigScreen,
+  InitMediumScreen,
+  BigScreen,
+  MediumScreen,
+} from "../../utils/constants";
 
-export default function Movies({ setIsError, addMovie, savedMovies }) {
-  const [allMovies, setAllMovies] = useState([])
-  const [filteredMovies, setFilteredMovies] = useState([])
-  const [searchedMouvie, setSearchedMovie] = useState('')
-  const [isCheck, setIsCheck] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [serverError, setServerError] = useState(false)
-  const [initialEntry, setInitialEntry] = useState(true)
+function Movies({
+  setChecked,
+  checked,
+  updateMovies,
+  allMovies,
+  filterMovies,
+  savedMovies,
+  setSavedMovies,
+  setUpdateMovies,
+  isDisabledCheckbox,
+  setIsDisabledCheckbox,
+  isPreloader,
+  getAllMovies,
+  disabledSearchButton,
+  disabledInput,
+}) {
+  const [displayedMoviesCount, setDisplayedMoviesCount] = useState(0);
+  const [isError, setIsError] = useState(false);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 
-  const filter = useCallback((search, isCheck, movies) => {
-    setSearchedMovie(search)
-    localStorage.setItem('movie', JSON.stringify(search))
-    localStorage.setItem('shorts', JSON.stringify(isCheck))
-    localStorage.setItem('allmovies', JSON.stringify(movies))
-    setFilteredMovies(movies.filter((movie) => {
-      const searchName = movie.nameRU.toLowerCase().includes(search.toLowerCase())
-      return isCheck ? (searchName && movie.duration <= 40) : searchName
-    }))
-  }, [])
-
-  function searchMovies(search) {
-    if (allMovies.length === 0) {
-      setIsLoading(true)
-      apiMovies.getMovies()
-        .then((res) => {
-          setAllMovies(res)
-          setIsCheck(false)
-          setServerError(false)
-          setInitialEntry(false)
-          filter(search, isCheck, res)
-        })
-        .catch(err => {
-          setServerError(true)
-          console.error(`Ошибкак при поске фильмов ${err}`)
-        })
-        .finally(() => setIsLoading(false))
+  const determiningNumberFilms = useCallback(() => {
+    let numberDisplayed;
+    if (innerWidth > BigScreen) {
+      numberDisplayed = InitBigScreen;
+    } else if (innerWidth > MediumScreen) {
+      numberDisplayed = InitMediumScreen;
     } else {
-      filter(search, isCheck, allMovies)
+      numberDisplayed = InitMobileScreen;
     }
-  }
+
+    setDisplayedMoviesCount(numberDisplayed);
+  }, [innerWidth]);
+
+  const handleClickButtonMore = () => {
+    const incrementValue =
+      innerWidth > BigScreen
+        ? StepBigScreen
+        : StepLessScreen;
+
+        setDisplayedMoviesCount((prevNumber) => prevNumber + incrementValue);
+  };
+
+  const handleResize = useCallback(() => {
+    setInnerWidth(window.innerWidth);
+    determiningNumberFilms();
+  }, [determiningNumberFilms]);
 
   useEffect(() => {
-    if (localStorage.allmovies && localStorage.shorts && localStorage.movie) {
-      const movies = JSON.parse(localStorage.allmovies)
-      const search = JSON.parse(localStorage.movie)
-      const isCheck = JSON.parse(localStorage.shorts)
-      setServerError(false)
-      setInitialEntry(false)
-      setSearchedMovie(search)
-      setIsCheck(isCheck)
-      setAllMovies(movies)
-      filter(search, isCheck, movies)
-    }
-  }, [filter])
+    determiningNumberFilms();
+  }, [updateMovies, determiningNumberFilms]);
 
-  function changeShort() {
-    if (isCheck) {
-      setIsCheck(false)
-      filter(searchedMouvie, false, allMovies)
-      localStorage.setItem('shorts', JSON.stringify(false))
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
+
+  useEffect(() => {
+    if (localStorage.getItem("updateMovies")) {
+      let checked = JSON.parse(localStorage.getItem("checked"));
+      let updateMovies = JSON.parse(localStorage.getItem("updateMovies"));
+
+      setUpdateMovies(updateMovies);
+      setChecked(checked);
     } else {
-      setIsCheck(true)
-      filter(searchedMouvie, true, allMovies)
-      localStorage.setItem('shorts', JSON.stringify(true))
+      setIsDisabledCheckbox(true);
     }
-  }
+  }, []);
+
+  const handleSubmitSearch = useCallback(
+    (value, checked) => {
+      if (!localStorage.getItem("updateMovies") || allMovies.length === 0) {
+        getAllMovies(value, checked);
+      } else {
+        filterMovies(value, checked, allMovies);
+      }
+      localStorage.setItem("valueSearch", JSON.stringify(value));
+      localStorage.setItem("checked", checked);
+    },
+    [allMovies, filterMovies, getAllMovies]
+  );
 
   return (
-    <>
+    <main className="movies">
       <SearchForm
-        isCheck={isCheck}
-        searchMovies={searchMovies}
-        searchedMovie={searchedMouvie}
-        changeShort={changeShort}
-        setIsError={setIsError}
-        initialEntry={initialEntry}
+        setIsDisabledCheckbox={setIsDisabledCheckbox}
+        isDisabledCheckbox={isDisabledCheckbox}
+        updateMovies={updateMovies}
+        setChecked={setChecked}
+        checked={checked}
+        handleSubmitSearch={handleSubmitSearch}
+        disabledInput={disabledInput}
+        disabledSearchButton={disabledSearchButton}
       />
-      <MoviesCardList
-        movies={filteredMovies}
-        addMovie={addMovie}
-        savedMovies={savedMovies}
-        isLoading={isLoading}
-        serverError={serverError}
-        initialEntry={initialEntry}
-      />
-    </>
-  )
+      {isPreloader ? (
+        <Preloader />
+      ) : (
+        updateMovies && (
+          <MoviesCardList>
+            {updateMovies.slice(0, displayedMoviesCount).map((item) => (
+              <MoviesCard
+                savedMovies={savedMovies}
+                setSavedMovies={setSavedMovies}
+                key={item.id}
+                id={item.id}
+                item={item}
+                link={item.trailerLink}
+                src={`https://api.nomoreparties.co${item.image.url}`}
+                name={item.nameRU}
+                duration={item.duration}
+              />
+            ))}
+          </MoviesCardList>
+        )
+      )}
+      <div className="error-message-container">
+        <p className="error-message-container__text">
+          {isError &&
+            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз."}
+          {updateMovies.length === 0 && "Ничего не найдено."}
+        </p>
+      </div>
+      {updateMovies.length > displayedMoviesCount && (
+        <div className="movies__button-container">
+          <button
+            onClick={handleClickButtonMore}
+            type="button"
+            className="movies__button"
+          >
+            Ещё
+          </button>
+        </div>
+      )}
+    </main>
+  );
 }
+
+export default Movies;

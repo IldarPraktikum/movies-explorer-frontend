@@ -1,108 +1,144 @@
-class ApiMain {
-  constructor(options) {
-    this._url = options.baseUrl;
+export const BASE_URL = "https://api.ildarpracticum-dip23.nomoredomainsrocks.ru";
+
+export const handleResponse = async (response) => {
+  if (!response.ok) {
+    const res = await response.json();
+    return Promise.reject(res);
   }
+  return response.json();
+};
 
-  _checkResponse(res) {return res.ok ? res.json() : Promise.reject(res.status)}
+export const register = (name, email, password) => {
+  return fetch(`${BASE_URL}/signup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, email, password }),
+  }).then(handleResponse);
+};
 
-  _request(url, options) {
-    return fetch(`${this._url}${url}`, options)
-      .then(this._checkResponse)
-  }
-
-  registration(username, email, password) {
-    return this._request('/signup', {
-      method: 'POST',
+export const authorized = async (password, email) => {
+  try {
+    const response = await fetch(`${BASE_URL}/signin`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password, email }),
+    });
+
+    const data = await handleResponse(response);
+
+    if (data.token) {
+      localStorage.setItem("jwt", data.token);
+      return data;
+    }
+  } catch (error) {
+  }
+};
+
+export const verifyToken = async (token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return handleResponse(response);
+  } catch (error) {
+  }
+};
+
+export const modifyUserProfile = async (data) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
+      method: "PATCH",
+      headers: {
+        authorization: `Bearer ${localStorage.jwt}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: username,
-        email: email,
-        password: password
-      })
-    })
-  }
+        name: data.name,
+        email: data.email,
+      }),
+    });
 
-  authorization(email, password) {
-    return this._request('/signin', {
-      method: 'POST',
+    return handleResponse(response);
+  } catch (error) {
+  }
+};
+
+export const getUserInfo = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
-        'Content-Type': 'application/json'
+        authorization: `Bearer ${localStorage.jwt}`,
       },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    })
-  }
+    });
 
-  getUserData(token) {
-    return this._request('/users/me', {
-      headers: {
-        "Authorization" : `Bearer ${token}`
-      }
-    })
+    return handleResponse(response);
+  } catch (error) {
   }
+};
 
-  setUserInfo(username, email, token) {
-    return this._request('/users/me', {
-      method: 'PATCH',
+export const getSaveMovies = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/movies`, {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        "Authorization" : `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.jwt}`,
       },
-      body: JSON.stringify({
-        name: username,
-        email: email,
-      })
-    })
-  }
+    });
 
-  getMovies(token) {
-    return this._request('/movies', {
-      headers: {
-        "Authorization" : `Bearer ${token}`
-      }
-    })
+    return handleResponse(response);
+  } catch (error) {
   }
+};
 
-  addMovie(data, token) {
-    return this._request('/movies', {
-      method: 'POST',
+export const addSavedMovies = async (data) => {
+  try {
+    const response = await fetch(`${BASE_URL}/movies`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        "Authorization" : `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.jwt}`,
       },
       body: JSON.stringify({
         country: data.country,
         director: data.director,
         duration: data.duration,
-        description: data.description,
         year: data.year,
+        description: data.description,
         image: `https://api.nomoreparties.co${data.image.url}`,
         trailerLink: data.trailerLink,
         thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
         movieId: data.id,
         nameRU: data.nameRU,
-        nameEN: data.nameEN
-      })
-    })
-  }
+        nameEN: data.nameEN,
+      }),
+    });
 
-  deleteMovie(cardId, token) {
-    return this._request(`/movies/${cardId}`, {
-      method: 'DELETE',
+    return handleResponse(response);
+  } catch (error) {
+  }
+};
+
+export const deleteSavedMovies = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/movies/${id}`, {
+      method: "DELETE",
       headers: {
-        "Authorization" : `Bearer ${token}`
-      }
-    })
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.jwt}`,
+      },
+    });
+
+    return handleResponse(response);
+  } catch (error) {
   }
-}
-
-const apiMain = new ApiMain({
-  baseUrl: 'https://api.ildarpracticum-dip23.nomoredomainsrocks.ru',
-  // baseUrl: 'http://localhost:3000',
-});
-
-export default apiMain
+};

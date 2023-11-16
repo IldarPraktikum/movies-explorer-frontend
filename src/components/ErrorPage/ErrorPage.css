@@ -1,0 +1,67 @@
+.errorpage-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 184px;
+}
+
+.errorpage-page__title {
+  color: #000;
+  text-align: center;
+  font-size: 140px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+}
+
+.errorpage-page__subtitle {
+  color: #000;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+}
+
+.errorpage-page__link {
+  color: #3456F3;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.errorpage-page__link:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+@media (max-width: 400px) {
+    .errorpage-page {
+        gap: 284px;
+      }
+      .errorpage-page__title {
+        font-size: 80px;
+      }
+      
+      .errorpage-page__subtitle {
+        font-size: 12px;
+      }
+      
+      .errorpage-page__link {
+        font-size: 12px;
+      }
+}
+

@@ -1,23 +1,33 @@
-import Wrapper from '../Wrapper/Wrapper'
-import './Techs.css'
+import "./Techs.css";
 
-export default function Techs() {
+const techsData = [
+  "HTML",
+  "CSS",
+  "JS",
+  "React",
+  "Git",
+  "Express.js",
+  "mongoDB"
+];
+
+function Techs() {
   return (
-    <section className="techs page__techs">
-      <Wrapper>
-        <h2 className="techs__title">Технологии</h2>
-        <h3 className="techs__subtitle">7 технологий</h3>
-        <p className="techs__description">На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.</p>
-        <ul className="techs__lists">
-          <li className="techs__list">HTML</li>
-          <li className="techs__list">CSS</li>
-          <li className="techs__list">JS</li>
-          <li className="techs__list">React</li>
-          <li className="techs__list">Git</li>
-          <li className="techs__list">Express.js</li>
-          <li className="techs__list">mongoDB</li>
-        </ul>
-      </Wrapper>
+    <section className="technologies" id="technologies">
+      <h2 className="technologies__name">Технологии</h2>
+      <h3 className="technologies__title">7 технологий</h3>
+      <p className="technologies__subtitle">
+        На курсе веб-разработки мы освоили технологии, которые применили в
+        дипломном проекте.
+      </p>
+      <ul className="technologies__list">
+        {techsData.map((tech, index) => (
+          <li key={index} className="technologies__item">
+            {tech}
+          </li>
+        ))}
+      </ul>
     </section>
-  )
+  );
 }
+
+export default Techs;

@@ -1,58 +1,90 @@
-import { useEffect } from 'react'
-import { useContext } from 'react'
-import useFormValidation from '../../hooks/useFormValidation'
-import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
-import './SearchForm.css'
-import ErrorContext from '../../contexts/ErrorContext'
-import { useLocation } from 'react-router-dom'
+import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import "./SearchForm.css";
+import { useFormValidation } from "../../hooks/useFormValidation";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-
-export default function SearchForm({ isCheck, changeShort, searchedMovie, searchMovies, setIsError, initialEntry, savedMovie }) {
-  const { pathname } = useLocation()
-  const isError = useContext(ErrorContext)
-  const { values, handleChange, reset } = useFormValidation()
+function SearchForm({
+  handleSubmitSearch,
+  checked,
+  setChecked,
+  isDisabledCheckbox,
+  setIsDisabledCheckbox,
+  disabledInput,
+  disabledSearchButton
+}) {
+  const { values, setValues, handleChange } = useFormValidation({});
+  const location = useLocation();
+  const [errorNoValue, setErrorNoValue] = useState(false);
 
   useEffect(() => {
-    if ((pathname === '/saved-movies' && savedMovie.length === 0)) {
-      reset({ search: '' })
-    } else {
-      reset({ search: searchedMovie })
+    if (
+      location.pathname === "/movies" &&
+      localStorage.getItem("valueSearch")
+    ) {
+      const valueLocalStorage = JSON.parse(localStorage.getItem("valueSearch"));
+      setValues(valueLocalStorage);
     }
-    setIsError(false)
-  }, [searchedMovie, reset, setIsError, pathname, savedMovie])
+  }, []);
 
-  function onSubmit(evt) {
-    evt.preventDefault()
-    if (evt.target.search.value) {
-      searchMovies(evt.target.search.value)
-      setIsError(false)
+  useEffect(() => {
+    if (!values.searchMovies || !localStorage.getItem("updateMovies")) {
+      setIsDisabledCheckbox(true);
     } else {
-      setIsError(true)
+      setIsDisabledCheckbox(false);
+      setErrorNoValue(false);
+    }
+  }, [values.searchMovies]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (values.searchMovies) {
+      handleSubmitSearch(values, checked);
+      setErrorNoValue(false);
+    } else {
+      setErrorNoValue(true);
+    }
+  }
+
+  function handleClick(checked) {
+    if (values.searchMovies) {
+      handleSubmitSearch(values, checked);
+    } else {
+      setIsDisabledCheckbox(true);
     }
   }
 
   return (
-    <section className='search page__search'>
-      <div className='search__container'>
-        <form noValidate className='search__form' name={'SearchForm'} onSubmit={onSubmit}>
+    <section className="search">
+      <form onSubmit={handleSubmit} className="search__form">
+        <div className="search__form-container">
           <input
-            type="text"
-            name='search'
-            placeholder='Фильм'
-            className='search__input'
-            value={values.search || ''}
-            onChange={(evt) => {
-              handleChange(evt)
-              setIsError(false)
-            }}
-            disabled={savedMovie ? (savedMovie.length === 0 && true) : false}
-            required
+            value={values.searchMovies || ""}
+            name="searchMovies"
+            onChange={handleChange}
+            placeholder="Фильм"
+            className="search__input"
+            disabled={disabledInput ? true : false}
           />
-          <button type='submit' className='search_submit'>Найти</button>
-        </form>
-        <span className={`search__error ${isError && 'search__error_active'}`}>{'Введите ключевое слово'}</span>
-        <FilterCheckbox isCheck={isCheck} changeShort={changeShort} initialEntry={initialEntry} />
-      </div>
+          <button
+            type="submit"
+            disabled={disabledSearchButton ? true : false}
+            className="search__button"
+          >Найти</button>
+          {errorNoValue && (
+            <span className="search__error">Введите название фильма.</span>
+          )}
+        </div>
+
+        <FilterCheckbox
+          isDisabledCheckbox={isDisabledCheckbox}
+          handleClick={handleClick}
+          checked={checked}
+          setChecked={setChecked}
+        />
+      </form>
     </section>
-  )
+  );
 }
+
+export default SearchForm;

@@ -1,57 +1,93 @@
-import Input from "../Input/Input";
-import SectionLogin from "../SectionLogin/SectionLogin";
-import useFormValidation from '../../hooks/useFormValidation'
-import { EmailRegex } from "../../utils/constants";
+import "./Register.css";
+import { Link, NavLink } from "react-router-dom";
+import logo from "../../images/header_logo.svg";
+import { useFormValidation } from "../../hooks/useFormValidation";
+import { EmailRegex, NameRegex } from "../../utils/constants";
 
-export default function Register({ name, onRegister, setIsError }) {
-  const { values, errors, isInputValid, isValid, handleChange, } = useFormValidation()
+function Register({
+  handleRegistration,
+  disabledButtonSubmitRegAuth,
+  disabledInput,
+}) {
+  const { values, error, isValid, handleChange } = useFormValidation();
 
-  function onSubmit(evt) {
-    evt.preventDefault()
-    onRegister(values.username, values.email, values.password)
+  const inputProps = {
+    disabled: disabledInput,
+    className: "register__form-input",
+  };
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    handleRegistration(values.name, values.email, values.password);
   }
 
   return (
-    <SectionLogin name={name} isValid={isValid} onSubmit={onSubmit} setIsError={setIsError}>
-      <Input
-        name='username'
-        type='text'
-        title='Имя'
-        minLength = '2'
-        value={values.username}
-        isInputValid={isInputValid.username}
-        error={errors.username}
-        onChange={(evt) => {
-          handleChange(evt)
-          setIsError(false)
-        }}
-      />
-      <Input
-        name='email'
-        type='email'
-        title='E-mail'
-        value={values.email}
-        isInputValid={isInputValid.email}
-        error={errors.email}
-        onChange={(evt) => {
-          handleChange(evt)
-          setIsError(false)
-        }}
-        pattern={EmailRegex}
-      />
-      <Input
-        name='password'
-        type='password'
-        title='Пароль'
-        minLength = '3'
-        value={values.password}
-        isInputValid={isInputValid.password}
-        error={errors.password}
-        onChange={(evt) => {
-          handleChange(evt)
-          setIsError(false)
-        }}
-      />
-    </SectionLogin>
-  )
+    <main>
+      <section className="register">
+        <div className="register__container">
+          <NavLink to="/" className="register__logo-link">
+            <img src={logo} alt="зеленый круг логотип сайта" />
+          </NavLink>
+          <h1 className="register__title">Добро пожаловать!</h1>
+          <form onSubmit={handleSubmit} className="register__form-container">
+            <label className="register__form-item">
+              Имя
+              <input
+                name="name"
+                value={values.name || ""}
+                onChange={handleChange}
+                required
+                minLength={2}
+                pattern={NameRegex}
+                type="text"
+                {...inputProps}
+              />
+              <span className="register__form-span">{error.name}</span>
+            </label>
+            <label className="register__form-item">
+              E-mail
+              <input
+                name="email"
+                value={values.email || ""}
+                onChange={handleChange}
+                required
+                type="email"
+                pattern={EmailRegex}
+                {...inputProps}
+              />
+              <span className="register__form-span">{error.email}</span>
+            </label>
+            <label className="register__form-item">
+              Пароль
+              <input
+                name="password"
+                value={values.password || ""}
+                minLength={2}
+                onChange={handleChange}
+                required
+                type="password"
+                {...inputProps}
+              />
+              <span className="register__form-span">{error.password}</span>
+            </label>
+            <button
+              type="submit"
+              disabled={!isValid || disabledButtonSubmitRegAuth}
+              className="register__form-button"
+            >
+              Зарегистрироваться
+            </button>
+          </form>
+          <p className="register__text">
+            Уже зарегистрированы?
+            <Link to="/signin" className="register__link">
+              Войти
+            </Link>
+          </p>
+        </div>
+      </section>
+    </main>
+  );
 }
+
+export default Register;

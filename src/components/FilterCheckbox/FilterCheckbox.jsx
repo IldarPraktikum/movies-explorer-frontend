@@ -1,24 +1,37 @@
-import './FilterCheckbox.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import './FilterCheckbox.css';
 
-export default function FilterCheckbox({ isCheck, changeShort, initialEntry }) {
+function FilterCheckbox({ setChecked, checked, handleClick, isCheckboxDisabled }) {
+  const updateCheckboxStatus = () => {
+    setChecked((prevChecked) => {
+      handleClick(!prevChecked);
+      return !prevChecked;
+    });
+  };
+
   return (
-    <label className={`search__label-container ${initialEntry && 'search__label-containe_disabled'}`}>
-      <div className='search__input-container'>
-        <input type="checkbox" className='search__ckeck' onChange={() => changeShort()} disabled={initialEntry} />
-        <svg className='search__check-svg' width="36" height="20" viewBox="0 0 36 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g id="smalltumb">
-            <rect
-              className={`search__check-svg-rect ${!isCheck ? 'search__check-svg-rect_active' : ''}`}
-              id="tumb__COLOR:tumbler-on" width="36" height="20" rx="10" fill="#2BE080"
-            />
-            <circle
-              className={`search__check-svg-circle ${!isCheck ? 'search__check-svg-circle_active' : ''}`}
-              id="tumb__COLOR:tumbler-on-2" cx="26" cy="10" r="8" fill="white"
-            />
-          </g>
-        </svg>
-      </div>
-      <span className='search__check-text'>Короткометражки</span>
-    </label>
-  )
+    <div className="filter-checkbox">
+      <label>
+        <input
+          onChange={updateCheckboxStatus}
+          checked={checked}
+          disabled={isCheckboxDisabled}
+          className="filter-checkbox__input"
+          type="checkbox"
+        />
+        <span className="filter-checkbox__switch" />
+      </label>
+      <p className="filter-checkbox__text">Короткометражки</p>
+    </div>
+  );
 }
+
+FilterCheckbox.propTypes = {
+  setChecked: PropTypes.func.isRequired,
+  checked: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  isCheckboxDisabled: PropTypes.bool,
+};
+
+export default FilterCheckbox;

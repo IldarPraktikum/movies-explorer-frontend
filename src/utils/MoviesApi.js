@@ -1,22 +1,21 @@
-class ApiMovies {
-  constructor(options) {
-    this._url = options.baseUrl;
+export const MOVIES_URL = "https://api.nomoreparties.co/beatfilm-movies"; 
+
+export const getMovies = async () => {
+  try {
+    const response = await fetch(MOVIES_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ошибка: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
   }
-
-  _checkResponse(res) {return res.ok ? res.json() : Promise.reject}
-
-  _request(url, options) {
-    return fetch(`${this._url}${url}`, options)
-      .then(this._checkResponse)
-  }
-
-  getMovies() {
-    return this._request('/')
-  }
-}
-
-const apiMovies = new ApiMovies({
-  baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
-});
-
-export default apiMovies
+};

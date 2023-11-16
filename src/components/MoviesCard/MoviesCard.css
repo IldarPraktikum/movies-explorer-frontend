@@ -1,102 +1,164 @@
-.gallery__card {
-  background-color: #FFFFFF;
+.movie {
+  display: flex;
+  position: relative;
+}
+
+.movie__link-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  gap: 14px;
   width: 100%;
 }
 
-.gallery__card-group {
-  padding: 0;
-  min-height: 68px;
-  display: flex;
-  justify-content: space-between;
+.movie__img {
+  object-position: center;
+  object-fit: cover;
+  max-width: 270px;
+  height: 151px;
 }
 
-.gallery__text-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 240px;
+.movie:hover .movie__button-save_disactive {
+  display: block;
 }
 
-@media screen and (max-width: 1023px) {
-  .gallery__text-group {
-    max-width: 275px;
-  }
+.movie__button-save {
+  position: absolute;
+  top: 160px;
+  right: 0px;
 }
 
-@media screen and (max-width: 767px) {
-  .gallery__text-group {
-    max-width: 235px;
-  }
+.movie__button-save_active {
+  width: 24px;
+  height: 24px;
+  background-image: url("../../images/likesaveac.svg");
+  border: none;
+  border-radius: 50%;
 }
 
-.gallery__subtitle {
-  margin: 14px 0 9px 0x;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: normal;
-}
-
-.gallery__duration {
-  font-size: 11px;
-  font-weight: 400;
-  line-height: normal;
-  color: #A0A0A0;
-  border-top: 1px solid #E8E8E8;
-  width: 270px;
-  margin-top: 13px;
-  padding-top: 6px;
-
-}
-
-.gallery__save {
-  align-self: flex-start;
-  padding: 0;
-  margin-top: 14px;
+.movie__button-save_disactive {
   width: 24px;
   height: 24px;
   border: none;
-  background-color: transparent;
-  background-image: url(../../images/likesave.svg);
+  border-radius: 30px;
+  background-image: url("../../images/likesave.svg");
   background-repeat: no-repeat;
+}
+
+.movie__button-save_delete {
+  background-image: url("../../images/close.svg");
+  position: absolute;
+  top: 160px;
+  right: 0px;
+  position: absolute;
+    top: 160px;
+    right: 0px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 30px;
+    display: block;
+}
+
+.movie__button-save_disactive:hover,
+.movie__button-save_active:hover,
+.movie__button-save_delete:hover {
+  opacity: 0.8;
   cursor: pointer;
-  transition: opacity .2s ease;
 }
 
-.gallery__save_active {
-  background-image: url(../../images/likesaveac.svg);
+.movie__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.gallery__image {
-  object-fit: cover;
-  display: block;
-  min-width: 270px;
-  width: 100%;
-  height: 151px;
-  cursor: pointer;
+.movie__name {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  max-width: 250px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
-@media screen and (max-width: 1023px) {
-  .gallery__image {
-    height: 190px;
+.movie__duration {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 270px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #A0A0A0;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.9;
+  margin-top: 13px;
+  padding-top: 6px;
+  border-top: 1px solid #E8E8E8;
+}
+
+@media (max-width: 1100px) {
+  .movie__button-save {
+    top: 160px;
+    right: 67px;
+  }
+
+  .movie__button-save_delete {
+    top: 160px;
+    right: 67px;
   }
 }
 
-@media screen and (max-width: 767px) {
-  .gallery__image {
-    height: 168px;
+@media (max-width: 680px) {
+  .movie__button-save {
+    top: 160px;
+    right: 30px;
+  }
+
+  .movie__button-save_delete {
+    top: 160px;
+    right: 30px;
   }
 }
 
-.gallery__save_type_delete {
-  background-position: center;
-  background-image: url(../../images/close.svg);
+@media (max-width: 768px) {
+  .movie__button-save_disactive {
+    display: block;
+  }
+
+  .movie__button-save_delete {
+    width: 21px;
+    height: 21px;
+    border: none;
+    border-radius: 50%;
+    display: block;
+  }
+  .movie__info {
+    padding: 0;
+  }
+
+  .movie__img {
+    max-height: 190px;
+  }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .gallery__save:hover {
-    opacity: .6;
+@media (max-width: 320px) {
+  .movie__link-container {
+    gap: 16px;
+  }
+
+  .movie__name {
+    color: #000;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
   }
 }

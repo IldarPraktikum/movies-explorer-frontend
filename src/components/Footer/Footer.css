@@ -2,12 +2,15 @@
   display: flex;
   flex-direction: column;
   padding: 79px 70px 0;
+  max-width: 1140px;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 1023px) {
   .page__footer {
     padding-left: 30px;
     padding-right: 30px;
+    max-width: 708px;
   }
 }
 
@@ -19,10 +22,8 @@
 
 .page__footer_type_saved-movies {
   padding-top: 52px;
-}
 
-@media screen and (max-width: 767px) {
-  .page__footer_type_saved-movies {
+  @media screen and (max-width: 767px) {
     padding-top: 52px;
   }
 }
@@ -58,12 +59,10 @@
   }
 }
 
-.footer__nav {
+.footer__menu {
   display: flex;
-}
 
-@media screen and (max-width: 767px) {
-  .footer__nav {
+  @media screen and (max-width: 767px) {
     order: -1;
     flex-direction: column;
     align-items: center;
@@ -75,15 +74,13 @@
   font-size: 13px;
   font-weight: 400;
   line-height: 16px;
-}
 
-@media screen and (max-width: 767px) {
-  .footer__subtitle {
+  @media screen and (max-width: 767px) {
     font-size: 12px;
   }
 }
 
-.footte__link {
+.footer__link {
   margin-right: 20px;
   text-decoration: none;
   font-size: 13px;
@@ -91,29 +88,32 @@
   line-height: 16px;
   color: #000;
   transition: opacity .2s ease;
-}
 
-@media screen and (max-width: 767px) {
-  .footte__link {
+  @media screen and (max-width: 767px) {
     font-size: 12px;
     margin-right: 0;
     margin-bottom: 12px;
   }
 }
 
-.footte__link:last-of-type {
+.footer__link:last-of-type {
   margin-right: 0;
-}
 
-@media screen and (max-width: 767px) {
-  .footte__link:last-of-type {
+  @media screen and (max-width: 767px) {
     margin-bottom: 28px;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .footte__link:hover {
+  .footer__link:hover {
     opacity: .6;
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .page__footer {
+    padding: 79px 10px 0;
+    max-width: 300px;
   }
 }
