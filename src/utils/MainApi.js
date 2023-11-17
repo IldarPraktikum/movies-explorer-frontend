@@ -142,3 +142,4 @@ export const deleteSavedMovies = async (id) => {
   } catch (error) {
   }
 };
+

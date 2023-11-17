@@ -93,3 +93,4 @@ export default function Header({ name, loggedIn }) {
     </header>
   );
 }
+

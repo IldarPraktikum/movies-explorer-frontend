@@ -63,3 +63,5 @@ function Login({ authorizedMoove, disabledButtonSubmitRegAuth, disabledInput }) 
 
 export default Login;
 
+
+

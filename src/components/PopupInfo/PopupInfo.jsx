@@ -49,3 +49,5 @@ function PopupInfo({ closePopup }) {
 }
 
 export default PopupInfo;
+
+

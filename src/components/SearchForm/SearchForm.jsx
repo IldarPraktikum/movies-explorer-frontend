@@ -28,13 +28,13 @@ function SearchForm({
   }, []);
 
   useEffect(() => {
-    if (!values.searchMovies || !localStorage.getItem("updateMovies")) {
+    if (!values.searchMovies || !localStorage.getItem("updateMovies") ) {
       setIsDisabledCheckbox(true);
     } else {
       setIsDisabledCheckbox(false);
       setErrorNoValue(false);
     }
-  }, [values.searchMovies]);
+  });
 
   function handleSubmit(e) {
     e.preventDefault();

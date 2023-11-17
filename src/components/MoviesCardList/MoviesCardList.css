@@ -18,19 +18,19 @@
   list-style-type: none;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1165px) {
   .movies-list__container {
-    grid-template-columns: repeat(3, minmax(270px, 151px));
+    grid-template-columns: repeat(2, minmax(270px, 151px));
   }
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 750px) {
   .movies-list {
     padding: 70px 30px 12px;
   }
 
   .movies-list__container {
-    grid-template-columns: repeat(2, minmax(339px, 190px));
+    grid-template-columns: repeat(1, minmax(339px, 190px));
     gap: 47px 30px;
   }
 }

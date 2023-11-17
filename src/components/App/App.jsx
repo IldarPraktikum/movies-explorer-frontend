@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+import "./App.css";
 import Main from '../Main/Main';
+import Footer from '../Footer/Footer';
+
+import ErrorPage from '../ErrorPage/ErrorPage';
 import Movies from '../Movies/Movies';
+
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import SavedMovies from '../SavedMovies/SavedMovies';
-import ErrorPage from '../ErrorPage/ErrorPage';
 import PopupInfo from '../PopupInfo/PopupInfo';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
 import {
   authorized,
   verifyToken,
@@ -20,6 +22,7 @@ import {
   getUserInfo,
   register,
 } from '../../utils/MainApi';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { getMovies } from '../../utils/MoviesApi';
 
 const App = () => {
@@ -30,109 +33,113 @@ const App = () => {
   const [savMovies, setSavMovies] = useState([]);
   const [updateMovies, setUpdateMovies] = useState([]);
   const [selectSavedMovies, setSelectSavedMovies] = useState([]);
+
   const [checked, setChecked] = useState(false);
-  const [isDisabled, setIsDisabled] = useState({
-    checkbox: false,
-    buttonProfile: false,
-    buttonSearch: false,
-    buttonRegAuth: false,
-    input: false,
-  });
+  const [isDisabledCheckbox, setIsDisabledCheckbox] = useState(false);
+
+  const [disabledButtonSubmitProfile, setDisabledButtonSubmitProfile] = useState(false);
+  const [disabledSearchButton, setDisabledSearchButton] = useState(false);
+  const [disabledButtonSubmitRegAuth, setDisabledButtonSubmitSearchRegAuth] = useState(false);
+
+  const [disabledInput, setDisabledInput] = useState(false);
+
   const [isActiveHeader, setIsActiveHeader] = useState(false);
   const [isActiveFooter, setIsActiveFooter] = useState(false);
+
   const [currentUser, setCurrentUser] = useState({});
   const [buttonSave, setButtonSave] = useState(false);
+
   const [popupInfo, setPopupInfo] = useState({});
   const [isPreloader, setIsPreloader] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+
   const navigate = useNavigate();
 
-  const closePopup = () => setPopupInfo({ ...popupInfo, ok: false, error: false });
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   useEffect(() => {
-    const checkLocation = () => {
-      const movieRoutes = ['/movies', '/saved-movies'];
-      setIsActiveHeader(movieRoutes.includes(location.pathname));
-      setIsActiveFooter(movieRoutes.includes(location.pathname) || location.pathname === '/profile');
-    };
-    checkLocation();
-  }, [location]);
-
-  const handleLogin = () => setLoggedIn(true);
-
-  useEffect(() => {
-    const handleTokenCheck = async () => {
-      const jwt = localStorage.getItem('jwt');
-      if (jwt) {
-        try {
-          const res = await verifyToken(jwt);
-          setCurrentUser(res);
-          setLoggedIn(true);
-          navigate(path, { replace: true });
-        } catch (err) {
-          console.log(`${err.status} ${err.text}`);
-        }
-      }
-    };
-
     handleTokenCheck();
-  }, [loggedIn]);
+  }, []);
 
   useEffect(() => {
-    const fetchSaveMovies = async () => {
-      if (loggedIn) {
-        try {
-          const savedMovies = await getSaveMovies();
+    if (loggedIn) {
+      getSaveMovies()
+        .then((savedMovies) => {
           setSavMovies(savedMovies);
-        } catch (error) {
+        })
+        .catch((err) => {
           setSavMovies([]);
-        }
-      }
-    };
-
-    fetchSaveMovies();
+        });
+    }
   }, [loggedIn]);
+
+  const closePopup = () => {
+    setPopupInfo({ ...popupInfo, ok: false, error: false });
+  };
+
+  useEffect(() => {
+    if (
+      location.pathname === '/movies' ||
+      location.pathname === '/saved-movies'
+    ) {
+      setIsActiveHeader(true);
+      setIsActiveFooter(true);
+    } else if (location.pathname === '/profile') {
+      setIsActiveHeader(true);
+      setIsActiveFooter(false);
+    } else {
+      setIsActiveHeader(false);
+      setIsActiveFooter(false);
+    }
+  }, [location, isActiveHeader]);
 
   const handleRegistration = async (name, email, password) => {
+    setDisabledButtonSubmitSearchRegAuth(true);
+    setDisabledInput(true);
     try {
-      setIsDisabled({ ...isDisabled, buttonRegAuth: true, input: true });
-
       await register(name, email, password);
-      setPopupInfo({ ...popupInfo, ok: true, title: 'Вы успешно зарегистрировались.' });
-
+      setPopupInfo({
+        ...popupInfo,
+        ok: true,
+        title: 'Вы успешно зарегистрировались.',
+      });
       await authorizedMoove(password, email);
       navigate('/movies');
     } catch (res) {
       setPopupInfo({ ...popupInfo, error: true, title: res.message });
     } finally {
-      setIsDisabled({ ...isDisabled, buttonRegAuth: false, input: false });
+      setDisabledButtonSubmitSearchRegAuth(false);
+      setDisabledInput(false);
     }
   };
 
   const authorizedMoove = async (password, email) => {
+    setDisabledButtonSubmitSearchRegAuth(true);
+    setDisabledInput(true);
     try {
-      setIsDisabled({ ...isDisabled, buttonRegAuth: true, input: true });
-
       const data = await authorized(password, email);
       if (data.token) {
         handleLogin();
         navigate('/movies', { replace: true });
       }
-
       const userInfo = await getUserInfo();
       setCurrentUser(userInfo);
     } catch (res) {
       setPopupInfo({ ...popupInfo, error: true, title: res.message });
     } finally {
-      setIsDisabled({ ...isDisabled, buttonRegAuth: false, input: false });
+      setDisabledButtonSubmitSearchRegAuth(false);
+      setDisabledInput(false);
     }
   };
 
   const handleModifyUserProfile = async (values) => {
+    setDisabledInput(true);
+    setDisabledButtonSubmitProfile(true);
     try {
-      setIsDisabled({ ...isDisabled, input: true, buttonProfile: true });
-
       const res = await modifyUserProfile(values);
       setCurrentUser(res);
       setButtonSave(false);
@@ -140,19 +147,32 @@ const App = () => {
     } catch (res) {
       setPopupInfo({ ...popupInfo, error: true, title: res.message });
     } finally {
-      setIsDisabled({ ...isDisabled, input: false, buttonProfile: false });
+      setDisabledInput(false);
+    }
+  };
+
+  const handleTokenCheck = async () => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      try {
+        const res = await verifyToken(jwt);
+        setCurrentUser(res);
+        setLoggedIn(true);
+        navigate(path, { replace: true });
+      } catch (err) {
+        console.log(`${err.status} ${err.text}`);
+      }
     }
   };
 
   const filterMovies = (value, checked, movies) => {
-    const filtered = movies.filter((item) => {
-      const sort =
+    let filtered = movies.filter((item) => {
+      let sort =
         item.nameRU.toLowerCase().includes(value.searchMovies.toLowerCase()) ||
         item.nameEN.toLowerCase().includes(value.searchMovies.toLowerCase());
       return checked ? sort && item.duration <= 40 : sort;
     });
-
-    if (['/movies', '/saved-movies'].includes(location.pathname)) {
+    if (location.pathname === '/movies') {
       localStorage.setItem('updateMovies', JSON.stringify(filtered));
       setUpdateMovies(filtered);
     } else if (location.pathname === '/saved-movies') {
@@ -161,38 +181,42 @@ const App = () => {
   };
 
   const getAllMovies = async (value, checked) => {
+    setIsPreloader(true);
+    setDisabledSearchButton(true);
+    setDisabledInput(true);
+    setIsDisabledCheckbox(true);
     try {
-      setIsPreloader(true);
-      setIsDisabled({ ...isDisabled, buttonSearch: true, input: true, checkbox: true });
-
       const movies = await getMovies();
       setAllMovies(movies);
-      setIsDisabled({ ...isDisabled, checkbox: false });
+      setIsDisabledCheckbox(false);
       filterMovies(value, checked, movies);
       setIsError(false);
     } catch (error) {
       setIsError(true);
     } finally {
       setIsPreloader(false);
-      setIsDisabled({ ...isDisabled, buttonSearch: false, input: false });
+      setDisabledSearchButton(false);
+      setDisabledInput(false);
     }
   };
 
   return (
     <div className="page">
-      <CurrentUserContext.Provider value={{ value: [currentUser, setCurrentUser], value2: [popupInfo, setPopupInfo] }}>
+      <CurrentUserContext.Provider
+        value={{
+          value: [currentUser, setCurrentUser],
+          value2: [popupInfo, setPopupInfo],
+        }}
+      >
         {isActiveHeader && <Header loggedIn={loggedIn} />}
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Header name="home" loggedIn={loggedIn} />
-                <Main />
-                <Footer />
-              </>
-            }
-          />
+          <Route path="/" element={
+            <>
+              <Header name="home" loggedIn={loggedIn} />
+              <Main />
+              <Footer />
+            </>
+          } />
           <Route
             path="/signup"
             element={
@@ -200,9 +224,9 @@ const App = () => {
                 <Navigate to="/movies" replace />
               ) : (
                 <Register
-                handleRegistration={handleRegistration}
-                  disabledButtonSubmitRegAuth={isDisabled.buttonRegAuth}
-                  disabledInput={isDisabled.input}
+                  handleRegistration={handleRegistration}
+                  disabledButtonSubmitRegAuth={disabledButtonSubmitRegAuth}
+                  disabledInput={disabledInput}
                 />
               )
             }
@@ -215,8 +239,8 @@ const App = () => {
               ) : (
                 <Login
                   authorizedMoove={authorizedMoove}
-                  disabledButtonSubmitRegAuth={isDisabled.buttonRegAuth}
-                  disabledInput={isDisabled.input}
+                  disabledButtonSubmitRegAuth={disabledButtonSubmitRegAuth}
+                  disabledInput={disabledInput}
                 />
               )
             }
@@ -230,8 +254,8 @@ const App = () => {
                 getAllMovies={getAllMovies}
                 isPreloader={isPreloader}
                 setAllMovies={setAllMovies}
-                isDisabledCheckbox={isDisabled.checkbox}
-                setIsDisabledCheckbox={(value) => setIsDisabled({ ...isDisabled, checkbox: value })}
+                isDisabledCheckbox={isDisabledCheckbox}
+                setIsDisabledCheckbox={setIsDisabledCheckbox}
                 checked={checked}
                 setChecked={setChecked}
                 savedMovies={savMovies}
@@ -241,8 +265,8 @@ const App = () => {
                 setUpdateMovies={setUpdateMovies}
                 allMovies={allMovies}
                 filterMovies={filterMovies}
-                disabledInput={isDisabled.input}
-                disabledSearchButton={isDisabled.buttonSearch}
+                disabledInput={disabledInput}
+                disabledSearchButton={disabledSearchButton}
               />
             }
           />
@@ -260,10 +284,10 @@ const App = () => {
                 loggedIn={loggedIn}
                 updateMovies={updateMovies}
                 filterMovies={filterMovies}
-                setIsDisabledCheckbox={(value) => setIsDisabled({ ...isDisabled, checkbox: value })}
-                isDisabledCheckbox={isDisabled.checkbox}
-                disabledInput={isDisabled.input}
-                disabledSearchButton={isDisabled.buttonSearch}
+                setIsDisabledCheckbox={setIsDisabledCheckbox}
+                isDisabledCheckbox={isDisabledCheckbox}
+                disabledInput={disabledInput}
+                disabledSearchButton={disabledSearchButton}
               />
             }
           />
@@ -279,9 +303,9 @@ const App = () => {
                 setChecked={setChecked}
                 setUpdateMovies={setUpdateMovies}
                 setLoggedIn={setLoggedIn}
-                disabledButtonSubmitProfile={isDisabled.buttonProfile}
-                setDisabledButtonSubmitProfile={(value) => setIsDisabled({ ...isDisabled, buttonProfile: value })}
-                disabledInput={isDisabled.input}
+                disabledButtonSubmitProfile={disabledButtonSubmitProfile}
+                setDisabledButtonSubmitProfile={setDisabledButtonSubmitProfile}
+                disabledInput={disabledInput}
               />
             }
           />
@@ -295,3 +319,5 @@ const App = () => {
 };
 
 export default App;
+
+

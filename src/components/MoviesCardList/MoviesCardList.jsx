@@ -8,3 +8,4 @@ const MoviesCardList = ({ children }) => (
 );
 
 export default MoviesCardList;
+

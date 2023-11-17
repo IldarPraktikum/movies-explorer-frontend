@@ -106,12 +106,10 @@
 @media (max-width: 1100px) {
   .movie__button-save {
     top: 160px;
-    right: 67px;
   }
 
   .movie__button-save_delete {
     top: 160px;
-    right: 67px;
   }
 }
 
@@ -162,3 +160,5 @@
     line-height: normal;
   }
 }
+
+

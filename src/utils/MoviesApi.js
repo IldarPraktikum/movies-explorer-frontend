@@ -19,3 +19,5 @@ export const getMovies = async () => {
     throw new Error(error.message);
   }
 };
+
+
