@@ -1,0 +1,125 @@
+.search {
+  padding: 79px 70px 10px;
+  margin: auto;
+}
+
+.search__form {
+  position: relative;
+  width: 100%;
+  max-width: 1140px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.search__form-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: solid 1px #E8E8E8;
+    padding-bottom: 13px;
+}
+
+.search__input {
+  display: flex;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  width: 100%;
+  max-width: 1086px;
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  color: #A0A0A0;
+  font-feature-settings: "clig" off, "liga" off;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.search__input:focus {
+  outline: 1px solid #4285F4; ;
+}
+
+.search__button {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  background-color: 
+  #3456F3;
+  border-radius: 40px;
+  width: 80px;
+  min-height: 34px;
+  color: #FFFFFF;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 18px;
+  border: none;
+  transition: opacity .3s linear;
+  max-width: 58px;
+  cursor: pointer;
+}
+
+.search__button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.search__button:disabled {
+  opacity: 0.5;
+}
+
+.search__error {
+  position: absolute;
+  top: 66px;
+  left: 0;
+  margin: auto;
+  color: #FF3055;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .search {
+    padding: 76px 30px 10px;
+  }
+
+  .search__form {
+    padding-bottom: 40px;
+    gap: 38px;
+  }
+
+  .search__input {
+    padding: 20px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 500px) {
+  .search {
+    padding: 76px 14px 10px;
+  }
+
+  .search__border-bottom-line {
+    min-width: 292px;
+  }
+
+  .search__form {
+    padding-bottom: 40px;
+    gap: 48px;
+  }
+
+  .search__input {
+    padding: 12px;
+    height: 44px;
+  }
+
+  .search__button {
+    margin: 0;
+  }
+}

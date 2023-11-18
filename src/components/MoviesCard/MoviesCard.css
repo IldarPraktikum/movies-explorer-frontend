@@ -1,0 +1,164 @@
+.movie {
+  display: flex;
+  position: relative;
+}
+
+.movie__link-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  gap: 14px;
+  width: 100%;
+}
+
+.movie__img {
+  object-position: center;
+  object-fit: cover;
+  max-width: 270px;
+  height: 151px;
+}
+
+.movie:hover .movie__button-save_disactive {
+  display: block;
+}
+
+.movie__button-save {
+  position: absolute;
+  top: 160px;
+  right: 0px;
+}
+
+.movie__button-save_active {
+  width: 24px;
+  height: 24px;
+  background-image: url("../../images/likesaveac.svg");
+  border: none;
+  border-radius: 50%;
+}
+
+.movie__button-save_disactive {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 30px;
+  background-image: url("../../images/likesave.svg");
+  background-repeat: no-repeat;
+}
+
+.movie__button-save_delete {
+  background-image: url("../../images/close.svg");
+  position: absolute;
+  top: 160px;
+  right: 0px;
+  position: absolute;
+    top: 160px;
+    right: 0px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 30px;
+    display: block;
+}
+
+.movie__button-save_disactive:hover,
+.movie__button-save_active:hover,
+.movie__button-save_delete:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.movie__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.movie__name {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  max-width: 250px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie__duration {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 270px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #A0A0A0;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.9;
+  margin-top: 13px;
+  padding-top: 6px;
+  border-top: 1px solid #E8E8E8;
+}
+
+@media (max-width: 1100px) {
+  .movie__button-save {
+    top: 160px;
+  }
+
+  .movie__button-save_delete {
+    top: 160px;
+  }
+}
+
+@media (max-width: 680px) {
+  .movie__button-save {
+    top: 160px;
+    right: 30px;
+  }
+
+  .movie__button-save_delete {
+    top: 160px;
+    right: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movie__button-save_disactive {
+    display: block;
+  }
+
+  .movie__button-save_delete {
+    width: 21px;
+    height: 21px;
+    border: none;
+    border-radius: 50%;
+    display: block;
+  }
+  .movie__info {
+    padding: 0;
+  }
+
+  .movie__img {
+    max-height: 190px;
+  }
+}
+
+@media (max-width: 320px) {
+  .movie__link-container {
+    gap: 16px;
+  }
+
+  .movie__name {
+    color: #000;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+
